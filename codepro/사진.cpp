@@ -3,9 +3,9 @@
 #include <cstring>
 using namespace std;
 
-int N;//제품 수
+int N;
 struct st{
-	int X, ID;//위치, 아이디
+	int X, ID;
 };
 st A[50010];
 int totCnt = 0, counts[50010];
@@ -63,9 +63,7 @@ int solve()
 
                 while(A[right].X-A[left].X > len) {
                     counts[A[left].ID]--;
-                    if(counts[A[left].ID]==0) {
-						cnt--;
-					}
+                    if(counts[A[left].ID]==0) cnt--;
                     left++;
                 }
 
