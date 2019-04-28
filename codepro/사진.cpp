@@ -1,66 +1,69 @@
 #include <cstdio>
 #include <algorithm>
-#include <map>
+#include <cstring>
 using namespace std;
 
-int N;//제품 수
+int N;
 struct st{
-	int X, ID;//위치, 아이디
+	int X, ID;
 };
 st A[50010];
-int IDs[50010], totCnt;
-map<int,int> mp;
+int totCnt = 0, counts[50010];
 
-bool cmp (const st& a, const st& b) { return a.X<b.X; }
+bool cmp (const st& a, const st& b) { return a.X < b.X; }
+bool cmp2 (const st& a, const st& b) {return a.ID < b.ID; }
 
 void InputData(){
-    totCnt = 0;
 	scanf("%d",&N);
-	for (int i = 0; i < N; i++){
-		scanf("%d %d",&A[i].X,&A[i].ID);
-        if(mp[A[i].ID]==0) {
-            totCnt++;
-            mp[A[i].ID]++;
-        } 
-	}
+	for (int i = 0; i < N; i++) scanf("%d %d",&A[i].X,&A[i].ID);
 }
 
-int main(){
-	int ans = -1;
+void indexing()
+{
+	sort(A,A+N,cmp2);
+	
+	int idx = 0;
 
-	InputData();			//	입력 함수
+	for(int i=0; i<N-1; ++i) A[i].ID = (A[i].ID==A[i+1].ID) ? idx : idx++; 
+	
+	A[N-1].ID = idx;
 
-	//	코드를 작성하세요
-    sort(A,A+N,cmp);
+	totCnt = idx+1;
+}
+
+int solve()
+{
+	sort(A,A+N,cmp);
 
     int st = 0, en = A[N-1].X-A[0].X;
     const int A0X = A[0].X;
-
+	int cic = 0;
     while(st<en) {
         int len = (en+st)/2;
         bool isOk = false;
         int cnt = 0, left = 0, right = N-1;
-        mp.clear();
+
+        memset(counts,0,sizeof(int)*totCnt);
 
         for(int i=0; i<N; ++i) {
             if(A[i].X - A0X > len) {
                 right = i-1;
                 break;
             }
-            if(mp[A[i].ID]==0) cnt++;
-            mp[A[i].ID]++;
+            if(counts[A[i].ID]==0) cnt++;
+            counts[A[i].ID]++;
         }
 
         if(cnt==totCnt) isOk=true;
         else {
             while(right < N-1) {
                 right++;
-                if(mp[A[right].ID]==0) cnt++;
-                mp[A[right].ID]++;
+                if(counts[A[right].ID]==0) cnt++;
+                counts[A[right].ID]++;
 
                 while(A[right].X-A[left].X > len) {
-                    mp[A[left].ID]--;
-                    if(mp[A[left].ID]==0) cnt--;
+                    counts[A[left].ID]--;
+                    if(counts[A[left].ID]==0) cnt--;
                     left++;
                 }
 
@@ -73,7 +76,15 @@ int main(){
         if(isOk) en = len;
         else st = len+1;
     }
+	return en;
+}
 
-	printf("%d\n",en);	//	정답 출력
-	return 0;
+int main(){
+
+	InputData();
+
+	indexing();
+
+	printf("%d\n",solve());
+    
 }
