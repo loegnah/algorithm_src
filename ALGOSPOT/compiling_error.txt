@@ -1,0 +1,3 @@
+C:\Users\imgoi\OneDrive\CODE\Algorithm\ALGOSPOT\CANADATRIP.cpp: In function 'int main()':
+C:\Users\imgoi\OneDrive\CODE\Algorithm\ALGOSPOT\CANADATRIP.cpp:36:16: error: 'scanf' was not declared in this scope
+C:\Users\imgoi\OneDrive\CODE\Algorithm\ALGOSPOT\CANADATRIP.cpp:44:21: error: 'printf' was not declared in this scope
