@@ -45,11 +45,12 @@ int main() {
 	string s,p;
 	getline(cin,s);
 	getline(cin,p);
-	vector<int> matched = kmp(s,p);
+
+	auto ret = getPi(p);
 	
-	printf("%d\n", (int)matched.size());
-	for(int i : matched) printf("%d ",i+1);
-	printf("\n");
+	for(auto k : ret) {
+		printf("%d\n",k);
+	}
 
 	return 0;
 }
