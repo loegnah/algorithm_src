@@ -1,29 +1,75 @@
-#include <cstdio>
-#include <cmath>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
-long long init(vector<long long> &a, vector<long long> &tree, int node, int start, int end) {
-	if (start == end) {
-		return tree[node] = a[start];
-	} else {
-		return tree[node] = init(a, tree, node*2, start, (start+end)/2) + init(a, tree, node*2+1, (start+end)/2+1, end);
+const int INT_MAX = 987654321;
+
+struct RMQ {
+	int n; // 배열 길이
+	vector<int> rangeMin; // 각 구간의 최소치
+
+	RMQ(const vector<int>& array) {
+		n = array.size();
+		rangeMin.resize(n*4);
+		init(array, 0, n-1, 1);
 	}
-}
-void update(vector<long long> &tree, int node, int start, int end, int index, long long diff) {
-	if (index < start || index > end) return;
-	tree[node] = tree[node] + diff;
-	if (start != end) {
-		update(tree,node*2, start, (start+end)/2, index, diff);
-		update(tree,node*2+1, (start+end)/2+1, end, index, diff);
+
+	int init(const vector<int>& array, int left, int right, int node) {
+		if(left == right)
+			return rangeMin[node] = array[left];
+
+		int mid = (left + right) / 2;
+		int leftMin = init(array, left, mid, node*2);
+		int rightMin = init(array, mid+1, right, node*2+1);
+		return rangeMin[node] = min(leftMin, rightMin);
 	}
-}
-long long sum(vector<long long> &tree, int node, int start, int end, int left, int right) {
-	if (left > end || right < start) {
-		return 0;
+
+	int update(int index, int newValue,
+				int node, int nodeLeft, int nodeRight) {
+		
+		// 안겹칠 때
+		if(index < nodeLeft || nodeRight < index)
+			return rangeMin[node];
+
+		// 리프 노드까지 왔을 때
+		if(nodeLeft = nodeRight)
+			return rangeMin[node] = newValue;
+		
+		//걸칠 때
+		int mid = (nodeLeft + nodeRight)/2;
+		return min(update(index, newValue, node*2, nodeLeft, mid),
+					update(index, newValue, node*2+1, mid+1, nodeRight));
 	}
-	if (left <= start && end <= right) {
-		return tree[node];
+
+	int query(int left, int right,
+				int node, int nodeLeft, int nodeRight) {
+		
+		// 안겹칠 때
+		if(right < nodeLeft || nodeRight < left) 
+			return INT_MAX;
+
+		// 완전히 포함될 때
+		if(left <= nodeLeft && nodeRight <= right) 
+			return rangeMin[node];
+
+		// 걸칠 때
+		int mid = (nodeLeft+ nodeRight)/2;
+		return min(query(left, right, node*2, nodeLeft, mid),
+					query(left, right, node*2+1, mid+1, nodeRight));
+		
 	}
-	return sum(tree, node*2, start, (start+end)/2, left, right) + sum(tree, node*2+1, (start+end)/2+1, end, left, right);
+	
+	// 외부 호출 용 인터페이스들
+	int update(int index, int newValue) {
+		return update (index, newValue, 1, 0, n-1);
+	}
+	int query(int left, int right) {
+		return query (left, right, 1, 0, n-1);
+	}
+
+};
+
+int main()
+{
+
 }
