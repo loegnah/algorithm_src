@@ -32,7 +32,7 @@ struct RMQ {
 			return rangeMin[node];
 
 		// 리프 노드까지 왔을 때
-		if(nodeLeft = nodeRight)
+		if(nodeLeft == nodeRight)
 			return rangeMin[node] = newValue;
 		
 		//걸칠 때
