@@ -1,13 +1,11 @@
+#include <map>
 #include <iostream>
-#include <vector>
 using namespace std;
-
-int c[101][101];
 
 int main()
 {
-    cout << c[-1][-100];
-    vector<int> a(3,10);
-
-    cout << a.size();
+    map<int,int> a;
+    a[10] = 10;
+    if(a[11]) cout << a[10];
+    else cout << "a";
 }
