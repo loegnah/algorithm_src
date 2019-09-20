@@ -43,14 +43,14 @@ vector<int> kmp(string s, string p) {
 
 int main() {
 	string s,p;
-	getline(cin,s);
-	getline(cin,p);
+	
+    while(true) {
+        getline(cin,s);
+        if(s == ".") break;
+        vector<int> fail = getPi(s);
 
-	auto ans = kmp(s,p);
-	cout << ans.size() << '\n';
-	for(int i : ans) cout << i+1 << ' ';
-	cout << '\n';
-
-
-	return 0;
+        int sz = s.size();
+        int ans = sz/(sz-fail[sz-1]);
+        cout << ans << '\n';
+    }
 }
