@@ -3,19 +3,12 @@ import sys
 readline = sys.stdin.readline
 MX = float('inf')
 subSums = [[0] * 2005 for _ in range(2005)]
-subSums2 = [[0] * 2005 for _ in range(2005)]
+rangePenalty = [[0] * 2005 for _ in range(2005)]
 
 
 def calc(i, j):
     vi, vj = nums[i], nums[j]
     return (A * (vi ^ vj) + B * (vi & vj) + C * (vi | vj)) % MOD
-
-
-def calc_range(a, b):
-    ret = 0
-    for i in range(a, b):
-        ret = (ret + subSums[i][b])
-    return ret
 
 
 def dp(st, en):
@@ -25,12 +18,12 @@ def dp(st, en):
     if st == en:
         ret = 0
     elif st == en - 1:
-        ret = subSums2[st][en]
+        ret = rangePenalty[st][en]
     else:
         mn = float('inf')
         for k in range(st, en):
             mn = min(mn, dp(st, k) + dp(k + 1, en))
-        ret = mn + subSums2[st][en]
+        ret = mn + rangePenalty[st][en]
     cache[st][en] = ret
     return ret
 
@@ -50,8 +43,9 @@ for _ in range(int(readline())):
         for q in range(p + 1, n):
             subSums[p][q] = subSums[p][q - 1] + calc(p, q)
 
-    for p in range(n):
-        for q in range(n):
-            subSums2[p][q] = calc_range(p, q)
+    for q in range(n - 1, -1, -1):
+        rangePenalty[q][q] = subSums[q][q]
+        for p in range(q - 1, -1, -1):
+            rangePenalty[p][q] = rangePenalty[p + 1][q] + subSums[p][q]
 
     print(dp(0, n - 1))
