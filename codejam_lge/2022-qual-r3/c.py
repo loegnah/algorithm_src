@@ -1,14 +1,14 @@
 import sys
-from functools import lru_cache
 
 readline = sys.stdin.readline
 MOD = pow(10, 9) + 7
 
 
-@lru_cache(maxsize=None)
 def dp(start_y, start_x, cut):
     if start_y == Y or start_x == X:
         return 0
+    if cache[start_y][start_x][cut] != -1:
+        return cache[start_y][start_x][cut]
 
     want = wantToppings[cut]
     y_want = sbr[want][0][start_y][start_x]
@@ -24,6 +24,8 @@ def dp(start_y, start_x, cut):
     if x_want != X:
         for cut_x in range(x_want + 1, X):
             ret = (ret + dp(start_y, cut_x, cut + 1)) % MOD
+
+    cache[start_y][start_x][cut] = ret
     return ret
 
 
@@ -52,6 +54,7 @@ for _ in range(T):
     for i in range(1, Y):
         toppings.append(readline().strip())
     wantToppings = readline().strip()
+    cache = [[[-1] * N for _ in range(X)] for _ in range(Y)]
 
     sbrList = ['S', 'B', 'R']
     sbr = {
@@ -61,6 +64,4 @@ for _ in range(T):
     }
 
     calc_sbr()
-
     print(dp(0, 0, 0))
-    dp.cache_clear()
