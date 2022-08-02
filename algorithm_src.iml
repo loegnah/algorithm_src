@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/codejam_lge/2021-r3/A" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/codejam_lge/2021-r3/C" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/codejam_lge/2021-r3/D" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/codejam_lge/2021-r3/E" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/codejam_lge/2021-r3/F" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
