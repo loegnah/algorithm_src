@@ -18,3 +18,4 @@ tree = [0] * (len(nums) + 1)
 # init
 for i, n in enumerate(nums):
     fwUpdate(tree, i + 1, n)
+print(tree)
