@@ -1,3 +1,6 @@
 *.exe
 .idea
-working/python/**/*/bin
+
+/working/python/*
+!/working/python/src
+
