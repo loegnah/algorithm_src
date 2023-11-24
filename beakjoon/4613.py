@@ -1,5 +1,5 @@
-num = list(26)
-num[]
+nums = list(26)
+nums[]
 
 T = int(input())
 for tc in range(T):
