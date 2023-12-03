@@ -2,8 +2,9 @@ import sys
 
 readline = sys.stdin.readline
 
-readline()
-X = list(map(int, sys.stdin.read().split()))
+N = int(readline().strip())
+X = list(map(int, readline().split()))
 X_dict = {x: i for i, x in enumerate(sorted(set(X)))}
 
-print(' '.join(map(str, map(lambda x: X_dict[x], X))))
+ans = map(lambda x: str(X_dict[x]), X)
+print(' '.join(ans))
