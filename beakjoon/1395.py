@@ -18,7 +18,7 @@ class LazySegTree:
         else:
             self.tree[node] = self.__init(node * 2, st, (st + en) // 2) + \
                               self.__init(node * 2 + 1, (st + en) // 2 + 1, en)
-        return self.tree[node]
+        return self.tree[node]asdfasdfdddddddddddd
 
     def toggleRange(self, left, right):
         return self.__toggleRangeImpl(1, 0, self.arrLen - 1, left, right)
