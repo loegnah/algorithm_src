@@ -6,20 +6,20 @@ class LazySegTree:
         self.arr, self.arrLen = arr, len(arr)
         self.treeSize = 2 ** (ceil(log2(self.arrLen)) + 1)
         self.tree, self.lazy = [0] * self.treeSize, [0] * self.treeSize
-        self.__segInit(1, 0, self.arrLen - 1)
+        self.__initTree(1, 0, self.arrLen - 1)
 
-    def __segInit(self, node, st, en):
+    def __initTree(self, node, st, en):
         if st == en:
             self.tree[node] = self.arr[st]
         else:
-            self.tree[node] = self.__segInit(node * 2, st, (st + en) // 2) + \
-                              self.__segInit(node * 2 + 1, (st + en) // 2 + 1, en)
+            self.tree[node] = self.__initTree(node * 2, st, (st + en) // 2) + \
+                              self.__initTree(node * 2 + 1, (st + en) // 2 + 1, en)
         return self.tree[node]
 
     def updateRange(self, left, right, diff):
-        return self.__segUpdateRange(1, 0, self.arrLen - 1, left, right, diff)
+        return self.__updateRangeImpl(1, 0, self.arrLen - 1, left, right, diff)
 
-    def __segUpdateRange(self, node, st, en, left, right, diff):
+    def __updateRangeImpl(self, node, st, en, left, right, diff):
         self.__updateLazy(node, st, en)
         if right < st or left > en: return
         if left <= st and en <= right:
@@ -29,8 +29,8 @@ class LazySegTree:
                 self.lazy[node * 2 + 1] += diff
             return
 
-        self.__segUpdateRange(node * 2, st, (st + en) // 2, left, right, diff)
-        self.__segUpdateRange(node * 2 + 1, (st + en) // 2 + 1, en, left, right, diff)
+        self.__updateRangeImpl(node * 2, st, (st + en) // 2, left, right, diff)
+        self.__updateRangeImpl(node * 2 + 1, (st + en) // 2 + 1, en, left, right, diff)
         self.tree[node] = self.tree[node * 2] + self.tree[node * 2 + 1]
 
     def __updateLazy(self, node, st, en):
@@ -43,9 +43,9 @@ class LazySegTree:
         self.lazy[node] = 0
 
     def sum(self, left, right):
-        return self.__segSum(1, 0, self.arrLen - 1, left, right)
+        return self.__sumImpl(1, 0, self.arrLen - 1, left, right)
 
-    def __segSum(self, node, st, en, left, right):
+    def __sumImpl(self, node, st, en, left, right):
         self.__updateLazy(node, st, en)
         if left > en or right < st:
             return 0
@@ -53,8 +53,8 @@ class LazySegTree:
         if left <= st and en <= right:
             return self.tree[node]
 
-        return self.__segSum(node * 2, st, (st + en) // 2, left, right) + \
-               self.__segSum(node * 2 + 1, (st + en) // 2 + 1, en, left, right)
+        return self.__sumImpl(node * 2, st, (st + en) // 2, left, right) + \
+            self.__sumImpl(node * 2 + 1, (st + en) // 2 + 1, en, left, right)
 
 
 # use
