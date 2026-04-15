@@ -41,7 +41,7 @@ def solve(N, A):
 
     right = [0] * N
     stack = []
-    for i in range(N - 1, -1, -1):
+    for i in range(N - 1, 0, -1):
         while stack and A[stack[-1]] < A[i]:
             stack.pop()
         right[i] = stack[-1] - 1 if stack else N - 1
